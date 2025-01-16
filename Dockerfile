@@ -15,11 +15,11 @@ RUN apt-get update && apt-get install -y \
 COPY . /app
 
 # Compile the sharp.C file into the executable "sharp"
-RUN gcc -o sharp sharp.C
+RUN gcc -o sharp sharp.C && chmod +x sharp
 
 # Set environment variables for the bot
 # These can be overwritten by environment variables at runtime (for security)
-ENV BOT_TOKEN=your-bot-token-here
+ENV BOT_TOKEN=7503104760:AAHOpFMB8uG_aA48YM75-DodB2WcuHb8nZU
 ENV FLASK_PORT=5000
 
 # Expose the Flask port
