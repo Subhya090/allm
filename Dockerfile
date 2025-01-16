@@ -1,25 +1,28 @@
-# Use a Python base image
+# Use a Python-based slim image as the base image
 FROM python:3.9-slim
 
-# Install dependencies for C program compilation and other required libraries
-RUN apt-get update && apt-get install -y gcc make && rm -rf /var/lib/apt/lists/*
-
-# Install Python dependencies
-RUN pip install pyTelegramBotAPI flask
-
-# Copy the application code (including sharp.c and bot.py)
-COPY . /app
+# Set working directory inside the container
 WORKDIR /app
 
-# Compile sharp.c to create the sharp executable
-RUN gcc -o sharp sharp.c -lpthread && chmod +x sharp
+# Install dependencies: GCC for compiling C code, and Python packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Switch to a non-root user for security reasons
-RUN useradd -m nonrootuser
-USER nonrootuser
+# Copy the current directory content into the container
+COPY . /app
 
-# Expose the port for Flask
+# Compile the sharp.C file into the executable "sharp"
+RUN gcc -o sharp sharp.C
+
+# Set environment variables for the bot
+# These can be overwritten by environment variables at runtime (for security)
+ENV BOT_TOKEN=your-bot-token-here
+ENV FLASK_PORT=5000
+
+# Expose the Flask port
 EXPOSE 5000
 
-# Run the bot script
+# Run the bot
 CMD ["python", "bot.py"]
