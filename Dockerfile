@@ -4,6 +4,7 @@ FROM python:3.9-slim
 # Set working directory inside the container
 WORKDIR /app
 
+COPY requirements.txt /app/requirements.txt
 # Install dependencies: GCC for compiling C code, and Python packages
 RUN apt-get update && apt-get install -y \
     build-essential \
